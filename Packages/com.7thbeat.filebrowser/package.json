@@ -2,6 +2,10 @@
 	"name": "com.7thbeat.filebrowser",
 	"displayName": "Unity File Browser",
 	"description": "File browser related utilities for Unity runtime",
+	"author": {
+		"name": "paring",
+		"email": "paring@7thbe.at"
+	},
 	"version": "0.0.1",
 	"files": [
 		"Plugins",

@@ -8,7 +8,7 @@ namespace Interop
         private const string Lib = "unityfiledialog";
 
         [DllImport(Lib)]
-        public static extern bool opener_reveal_file(string path);
+        public static extern bool opener_reveal(string path);
 
         [DllImport(Lib)]
         public static extern IntPtr file_dialog_create();

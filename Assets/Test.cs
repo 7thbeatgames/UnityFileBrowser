@@ -9,7 +9,7 @@ public class Test : MonoBehaviour
 
     public void RevealFile()
     {
-        Opener.RevealFile(Path.Combine(Application.persistentDataPath));
+        FileBrowser.Reveal(Path.Combine(Application.persistentDataPath));
     }
 
     public void PickFile()
