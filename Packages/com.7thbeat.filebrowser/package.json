@@ -1,4 +1,10 @@
 {
 	"name": "com.7thbeat.filebrowser",
-	"version": "0.0.1"
+	"displayName": "Unity File Browser",
+	"description": "File browser related utilities for Unity runtime",
+	"version": "0.0.1",
+	"files": [
+		"Plugins",
+		"Runtime"
+	]
 }
