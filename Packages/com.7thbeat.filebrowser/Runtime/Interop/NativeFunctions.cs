@@ -42,6 +42,12 @@ namespace Interop
         public static extern IntPtr file_dialog_save_file(IntPtr dialog);
 
         [DllImport(Lib)]
+        public static extern void file_dialog_set_can_create_directories(IntPtr dialog, bool canCreate);
+
+        [DllImport(Lib)]
+        public static extern void file_dialog_set_title(IntPtr dialog, string title);
+
+        [DllImport(Lib)]
         public static extern void cstring_free(IntPtr str);
 
         [DllImport(Lib)]

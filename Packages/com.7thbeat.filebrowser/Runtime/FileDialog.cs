@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 using Interop;
 
 namespace UnityFileDialog
@@ -12,7 +11,7 @@ namespace UnityFileDialog
         {
             NativeFunctions.file_dialog_set_directory(_ptr, path);
         }
-        
+
         public void SetFileName(string filename)
         {
             NativeFunctions.file_dialog_set_file_name(_ptr, filename);
@@ -24,14 +23,21 @@ namespace UnityFileDialog
         }
 
         public string PickFile() => NativeFunctions.GetStringAndFree(NativeFunctions.file_dialog_pick_file(_ptr));
-        
-        public string[] PickFiles() => NativeFunctions.GetCStringBufferAndFree(NativeFunctions.file_dialog_pick_files(_ptr));
-        
+
+        public string[] PickFiles() =>
+            NativeFunctions.GetCStringBufferAndFree(NativeFunctions.file_dialog_pick_files(_ptr));
+
         public string PickFolder() => NativeFunctions.GetStringAndFree(NativeFunctions.file_dialog_pick_folder(_ptr));
-        
-        public string[] PickFolders() => NativeFunctions.GetCStringBufferAndFree(NativeFunctions.file_dialog_pick_folders(_ptr));
+
+        public string[] PickFolders() =>
+            NativeFunctions.GetCStringBufferAndFree(NativeFunctions.file_dialog_pick_folders(_ptr));
 
         public string SaveFile() => NativeFunctions.GetStringAndFree(NativeFunctions.file_dialog_save_file(_ptr));
+
+        public void SetCanCreateDirectories(bool canCreate) =>
+            NativeFunctions.file_dialog_set_can_create_directories(_ptr, canCreate);
+
+        public void SetTitle(string title) => NativeFunctions.file_dialog_set_title(_ptr, title);
 
         public void Dispose()
         {

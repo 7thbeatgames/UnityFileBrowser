@@ -42,6 +42,7 @@ public class Test : MonoBehaviour
     {
         using var dialog = new FileDialog();
         dialog.SetDirectory(Application.dataPath);
+        dialog.SetCanCreateDirectories(false);
         var paths = dialog.PickFolders();
         var display = paths == null ? "NONE" : string.Join(", ", paths);
         pickedFileText.text = $"Picked folders: {display}";
@@ -53,6 +54,7 @@ public class Test : MonoBehaviour
         dialog.SetDirectory(Application.dataPath);
         dialog.AddFilter("Text File", new[] { "txt" });
         dialog.SetFileName("sans.txt");
+        dialog.SetTitle("Wow let's save the file!!");
         var path = dialog.SaveFile();
         pickedFileText.text = $"Saved file: {path ?? "NONE"}";
     }

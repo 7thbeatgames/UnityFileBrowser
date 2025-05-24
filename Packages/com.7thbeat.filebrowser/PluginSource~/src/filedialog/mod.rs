@@ -156,9 +156,25 @@ pub extern "C" fn file_dialog_pick_folders(dialog: *mut FileDialog) -> *mut CStr
     }
 }
 
-// pick_folders
-// set_can_create_directories
-// set_title
+#[unsafe(no_mangle)]
+pub extern "C" fn file_dialog_set_can_create_directories(
+    dialog: *mut FileDialog,
+    can_create: bool,
+) {
+    unsafe {
+        let dialog = &mut *dialog;
+        dialog.set_can_create_directories(can_create);
+    }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn file_dialog_set_title(dialog: *mut FileDialog, filename: *const c_char) {
+    unsafe {
+        let filename = std::ffi::CStr::from_ptr(filename).to_str().unwrap();
+        let dialog = &mut *dialog;
+        dialog.set_title(filename);
+    }
+}
 
 #[inline]
 fn convert_optional_path_to_raw(data: Option<PathBuf>) -> *mut c_char {
