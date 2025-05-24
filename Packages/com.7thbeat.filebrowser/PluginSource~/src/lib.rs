@@ -7,7 +7,7 @@ pub use filedialog::*;
 pub use opener::*;
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn cstring_destroy(ptr: *mut c_char) {
+pub unsafe extern "C" fn cstring_free(ptr: *mut c_char) {
     unsafe {
         if !ptr.is_null() {
             drop(CString::from_raw(ptr));

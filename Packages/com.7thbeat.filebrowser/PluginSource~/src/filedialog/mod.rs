@@ -1,7 +1,11 @@
 use std::{
     ffi::{CString, c_char},
-    path::Path,
+    path::{Path, PathBuf},
 };
+
+pub mod buffer;
+
+pub use buffer::*;
 
 pub struct FileDialog {
     pub dialog: Option<rfd::FileDialog>,
@@ -22,16 +26,41 @@ impl FileDialog {
         self.dialog = Some(self.dialog.take().unwrap().set_file_name(filename));
     }
 
-    pub fn pick_file(&self) -> Option<std::path::PathBuf> {
+    pub fn pick_file(&self) -> Option<PathBuf> {
         self.dialog.as_ref().unwrap().clone().pick_file()
     }
 
-    pub fn save_file(&self) -> Option<std::path::PathBuf> {
+    pub fn save_file(&self) -> Option<PathBuf> {
         self.dialog.as_ref().unwrap().clone().save_file()
     }
 
     pub fn add_filter(&mut self, name: &str, extensions: &[&str]) {
         self.dialog = Some(self.dialog.take().unwrap().add_filter(name, extensions));
+    }
+
+    pub fn pick_files(&self) -> Option<Vec<PathBuf>> {
+        self.dialog.as_ref().unwrap().clone().pick_files()
+    }
+
+    pub fn pick_folder(&self) -> Option<PathBuf> {
+        self.dialog.as_ref().unwrap().clone().pick_folder()
+    }
+
+    pub fn pick_folders(&self) -> Option<Vec<PathBuf>> {
+        self.dialog.as_ref().unwrap().clone().pick_folders()
+    }
+
+    pub fn set_can_create_directories(&mut self, can_create: bool) {
+        self.dialog = Some(
+            self.dialog
+                .take()
+                .unwrap()
+                .set_can_create_directories(can_create),
+        );
+    }
+
+    pub fn set_title(&mut self, title: &str) {
+        self.dialog = Some(self.dialog.take().unwrap().set_title(title));
     }
 }
 
@@ -69,12 +98,7 @@ pub extern "C" fn file_dialog_set_file_name(dialog: *mut FileDialog, filename: *
 pub extern "C" fn file_dialog_pick_file(dialog: *mut FileDialog) -> *mut c_char {
     unsafe {
         let dialog = &mut *dialog;
-        match dialog.pick_file() {
-            Some(path) => CString::new(path.to_string_lossy().to_string())
-                .unwrap()
-                .into_raw(),
-            None => std::ptr::null_mut(),
-        }
+        convert_optional_path_to_raw(dialog.pick_file())
     }
 }
 
@@ -82,12 +106,7 @@ pub extern "C" fn file_dialog_pick_file(dialog: *mut FileDialog) -> *mut c_char 
 pub extern "C" fn file_dialog_save_file(dialog: *mut FileDialog) -> *mut c_char {
     unsafe {
         let dialog = &mut *dialog;
-        match dialog.save_file() {
-            Some(path) => CString::new(path.to_string_lossy().to_string())
-                .unwrap()
-                .into_raw(),
-            None => std::ptr::null_mut(),
-        }
+        convert_optional_path_to_raw(dialog.save_file())
     }
 }
 
@@ -96,16 +115,74 @@ pub extern "C" fn file_dialog_add_filter(
     dialog: *mut FileDialog,
     name: *const c_char,
     extensions: *const *const c_char,
-    count: i32,
+    extensions_count: i32,
 ) {
     unsafe {
         let name = std::ffi::CStr::from_ptr(name).to_str().unwrap();
-        let extensions = std::slice::from_raw_parts(extensions, count as _);
+        let extensions = std::slice::from_raw_parts(extensions, extensions_count as _);
         let extensions = extensions
             .iter()
             .map(|ext| std::ffi::CStr::from_ptr(*ext).to_str().unwrap())
             .collect::<Vec<_>>();
         let dialog = &mut *dialog;
         dialog.add_filter(name, &extensions);
+    }
+}
+
+// pick_files
+
+#[unsafe(no_mangle)]
+pub extern "C" fn file_dialog_pick_files(dialog: *mut FileDialog) -> *mut CStringBuffer {
+    unsafe {
+        let dialog = &mut *dialog;
+        convert_optional_path_vec_to_raw(dialog.pick_files())
+    }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn file_dialog_pick_folder(dialog: *mut FileDialog) -> *mut c_char {
+    unsafe {
+        let dialog = &mut *dialog;
+
+        convert_optional_path_to_raw(dialog.pick_folder())
+    }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn file_dialog_pick_folders(dialog: *mut FileDialog) -> *mut CStringBuffer {
+    unsafe {
+        let dialog = &mut *dialog;
+        convert_optional_path_vec_to_raw(dialog.pick_folders())
+    }
+}
+
+// pick_folders
+// set_can_create_directories
+// set_title
+
+#[inline]
+fn convert_optional_path_to_raw(data: Option<PathBuf>) -> *mut c_char {
+    match data {
+        Some(path) => CString::new(path.to_string_lossy().to_string())
+            .unwrap()
+            .into_raw(),
+        None => std::ptr::null_mut(),
+    }
+}
+
+#[inline]
+fn convert_optional_path_vec_to_raw(data: Option<Vec<PathBuf>>) -> *mut CStringBuffer {
+    match data {
+        Some(paths) => {
+            let paths = paths
+                .iter()
+                .map(|path| path.to_string_lossy().to_string())
+                .map(|path| CString::new(path).unwrap())
+                .collect::<Vec<_>>();
+            let buffer = CStringBuffer::new(paths);
+            let buffer = Box::new(buffer);
+            Box::into_raw(buffer)
+        }
+        None => std::ptr::null_mut(),
     }
 }

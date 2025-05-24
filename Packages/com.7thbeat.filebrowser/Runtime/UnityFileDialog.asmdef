@@ -1,4 +1,14 @@
 {
-  "name": "UnityFileDialog",
-  "rootNamespace": "UnityFileDialog"
+    "name": "UnityFileDialog",
+    "rootNamespace": "UnityFileDialog",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

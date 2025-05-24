@@ -21,6 +21,32 @@ public class Test : MonoBehaviour
         pickedFileText.text = $"Picked file: {path ?? "NONE"}";
     }
 
+    public void PickMultipleFiles()
+    {
+        using var dialog = new FileDialog();
+        dialog.SetDirectory(Application.dataPath);
+        var paths = dialog.PickFiles();
+        var display = paths == null ? "NONE" : string.Join(", ", paths);
+        pickedFileText.text = $"Picked files: {display}";
+    }
+
+    public void PickFolder()
+    {
+        using var dialog = new FileDialog();
+        dialog.SetDirectory(Application.dataPath);
+        var path = dialog.PickFolder();
+        pickedFileText.text = $"Picked folder: {path ?? "NONE"}";
+    }
+
+    public void PickMultipleFolders()
+    {
+        using var dialog = new FileDialog();
+        dialog.SetDirectory(Application.dataPath);
+        var paths = dialog.PickFolders();
+        var display = paths == null ? "NONE" : string.Join(", ", paths);
+        pickedFileText.text = $"Picked folders: {display}";
+    }
+
     public void SaveFile()
     {
         using var dialog = new FileDialog();
