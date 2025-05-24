@@ -1,0 +1,12 @@
+[package]
+name = "ufd"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "unityfiledialog"
+crate-type = ["rlib", "cdylib"]
+
+[dependencies]
+opener = { version = "0.8.1", features = ["reveal"] }
+rfd = "0.15.3"
