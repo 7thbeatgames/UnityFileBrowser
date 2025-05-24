@@ -8,59 +8,54 @@ pub mod buffer;
 pub use buffer::*;
 
 pub struct FileDialog {
-    pub dialog: Option<rfd::FileDialog>,
+    pub dialog: rfd::FileDialog,
 }
 
 impl FileDialog {
     pub fn new() -> Self {
         FileDialog {
-            dialog: Some(rfd::FileDialog::new()),
+            dialog: rfd::FileDialog::new(),
         }
     }
 
     pub fn set_directory(&mut self, directory: &std::path::Path) {
-        self.dialog = Some(self.dialog.take().unwrap().set_directory(directory));
+        self.dialog = std::mem::take(&mut self.dialog).set_directory(directory);
     }
 
     pub fn set_file_name(&mut self, filename: &str) {
-        self.dialog = Some(self.dialog.take().unwrap().set_file_name(filename));
+        self.dialog = std::mem::take(&mut self.dialog).set_file_name(filename);
     }
 
     pub fn pick_file(&self) -> Option<PathBuf> {
-        self.dialog.as_ref().unwrap().clone().pick_file()
+        self.dialog.clone().pick_file()
     }
 
     pub fn save_file(&self) -> Option<PathBuf> {
-        self.dialog.as_ref().unwrap().clone().save_file()
+        self.dialog.clone().save_file()
     }
 
     pub fn add_filter(&mut self, name: &str, extensions: &[&str]) {
-        self.dialog = Some(self.dialog.take().unwrap().add_filter(name, extensions));
+        self.dialog = std::mem::take(&mut self.dialog).add_filter(name, extensions);
     }
 
     pub fn pick_files(&self) -> Option<Vec<PathBuf>> {
-        self.dialog.as_ref().unwrap().clone().pick_files()
+        self.dialog.clone().pick_files()
     }
 
     pub fn pick_folder(&self) -> Option<PathBuf> {
-        self.dialog.as_ref().unwrap().clone().pick_folder()
+        self.dialog.clone().pick_folder()
     }
 
     pub fn pick_folders(&self) -> Option<Vec<PathBuf>> {
-        self.dialog.as_ref().unwrap().clone().pick_folders()
+        self.dialog.clone().pick_folders()
     }
 
     pub fn set_can_create_directories(&mut self, can_create: bool) {
-        self.dialog = Some(
-            self.dialog
-                .take()
-                .unwrap()
-                .set_can_create_directories(can_create),
-        );
+        self.dialog = std::mem::take(&mut self.dialog).set_can_create_directories(can_create);
     }
 
     pub fn set_title(&mut self, title: &str) {
-        self.dialog = Some(self.dialog.take().unwrap().set_title(title));
+        self.dialog = std::mem::take(&mut self.dialog).set_title(title);
     }
 }
 
