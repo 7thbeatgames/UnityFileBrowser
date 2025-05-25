@@ -1,12 +1,14 @@
 [package]
-name = "ufd"
+name = "ufb"
 version = "0.1.0"
 edition = "2024"
 
 [lib]
-name = "unityfiledialog"
+name = "ufb"
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]
-opener = { version = "0.8.1", features = ["reveal"] }
+opener = { git = "https://github.com/paring-chan/opener.git", rev = "36412b7cec2445065669ebe9af02df5480c10550", features = [
+    "reveal",
+] }
 rfd = "0.15.3"

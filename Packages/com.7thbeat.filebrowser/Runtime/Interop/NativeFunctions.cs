@@ -5,7 +5,7 @@ namespace Interop
 {
     internal static class NativeFunctions
     {
-        private const string Lib = "unityfiledialog";
+        private const string Lib = "ufb";
 
         [DllImport(Lib)]
         public static extern bool opener_reveal(string path);

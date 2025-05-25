@@ -721,8 +721,7 @@ checksum = "42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d"
 [[package]]
 name = "opener"
 version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de96cad6ee771be7f68df884d3767460b4684012308d8342ed5623fe62b2628c"
+source = "git+https://github.com/paring-chan/opener.git?rev=36412b7cec2445065669ebe9af02df5480c10550#36412b7cec2445065669ebe9af02df5480c10550"
 dependencies = [
  "bstr",
  "normpath",
@@ -1117,7 +1116,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ufd"
+name = "ufb"
 version = "0.1.0"
 dependencies = [
  "opener",

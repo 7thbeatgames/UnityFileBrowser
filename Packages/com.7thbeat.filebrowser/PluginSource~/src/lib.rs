@@ -22,5 +22,5 @@ fn test_file_dialog() {
 
 #[test]
 fn test_file_opener() {
-    reveal_file("Cargo.toml");
+    reveal("Cargo.toml");
 }
