@@ -1,2 +1,1 @@
-[ ] add Windows native lib & test
-[ ] add macOS native lib & tet
+add macOS native lib & tet
