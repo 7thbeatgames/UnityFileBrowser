@@ -11,8 +11,35 @@ pub struct FileDialog {
     pub dialog: rfd::FileDialog,
 }
 
+impl Default for FileDialog {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl FileDialog {
+    #[cfg(target_os = "linux")]
     pub fn new() -> Self {
+        Self::_new()
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn new() -> Self {
+        use crate::utils::windows;
+        let mut dialog = Self::_new();
+
+        let hwnd = windows::get_windows_hwnd();
+
+        if let Some(hwnd) = hwnd {
+            dialog.dialog = dialog
+                .dialog
+                .set_parent(&windows::WindowsWindowParent { hwnd });
+        }
+
+        dialog
+    }
+
+    fn _new() -> Self {
         FileDialog {
             dialog: rfd::FileDialog::new(),
         }
@@ -64,15 +91,24 @@ pub extern "C" fn file_dialog_create() -> *mut FileDialog {
     Box::into_raw(Box::new(FileDialog::new()))
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_destroy(dialog: *mut FileDialog) {
+pub unsafe extern "C" fn file_dialog_destroy(dialog: *mut FileDialog) {
     unsafe {
         drop(Box::from_raw(dialog));
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_set_directory(dialog: *mut FileDialog, directory: *const c_char) {
+pub unsafe extern "C" fn file_dialog_set_directory(
+    dialog: *mut FileDialog,
+    directory: *const c_char,
+) {
     unsafe {
         let directory = std::ffi::CStr::from_ptr(directory).to_str().unwrap();
         let dialog = &mut *dialog;
@@ -80,8 +116,11 @@ pub extern "C" fn file_dialog_set_directory(dialog: *mut FileDialog, directory: 
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_set_file_name(dialog: *mut FileDialog, filename: *const c_char) {
+pub unsafe extern "C" fn file_dialog_set_file_name(dialog: *mut FileDialog, filename: *const c_char) {
     unsafe {
         let filename = std::ffi::CStr::from_ptr(filename).to_str().unwrap();
         let dialog = &mut *dialog;
@@ -89,24 +128,33 @@ pub extern "C" fn file_dialog_set_file_name(dialog: *mut FileDialog, filename: *
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_pick_file(dialog: *mut FileDialog) -> *mut c_char {
+pub unsafe extern "C" fn file_dialog_pick_file(dialog: *mut FileDialog) -> *mut c_char {
     unsafe {
         let dialog = &mut *dialog;
         convert_optional_path_to_raw(dialog.pick_file())
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_save_file(dialog: *mut FileDialog) -> *mut c_char {
+pub unsafe extern "C" fn file_dialog_save_file(dialog: *mut FileDialog) -> *mut c_char {
     unsafe {
         let dialog = &mut *dialog;
         convert_optional_path_to_raw(dialog.save_file())
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_add_filter(
+pub unsafe extern "C" fn file_dialog_add_filter(
     dialog: *mut FileDialog,
     name: *const c_char,
     extensions: *const *const c_char,
@@ -124,18 +172,22 @@ pub extern "C" fn file_dialog_add_filter(
     }
 }
 
-// pick_files
-
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_pick_files(dialog: *mut FileDialog) -> *mut CStringBuffer {
+pub unsafe extern "C" fn file_dialog_pick_files(dialog: *mut FileDialog) -> *mut CStringBuffer {
     unsafe {
         let dialog = &mut *dialog;
         convert_optional_path_vec_to_raw(dialog.pick_files())
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_pick_folder(dialog: *mut FileDialog) -> *mut c_char {
+pub unsafe extern "C" fn file_dialog_pick_folder(dialog: *mut FileDialog) -> *mut c_char {
     unsafe {
         let dialog = &mut *dialog;
 
@@ -143,16 +195,22 @@ pub extern "C" fn file_dialog_pick_folder(dialog: *mut FileDialog) -> *mut c_cha
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_pick_folders(dialog: *mut FileDialog) -> *mut CStringBuffer {
+pub unsafe extern "C" fn file_dialog_pick_folders(dialog: *mut FileDialog) -> *mut CStringBuffer {
     unsafe {
         let dialog = &mut *dialog;
         convert_optional_path_vec_to_raw(dialog.pick_folders())
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_set_can_create_directories(
+pub unsafe extern "C" fn file_dialog_set_can_create_directories(
     dialog: *mut FileDialog,
     can_create: bool,
 ) {
@@ -162,8 +220,11 @@ pub extern "C" fn file_dialog_set_can_create_directories(
     }
 }
 
+/// # Safety
+///
+/// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub extern "C" fn file_dialog_set_title(dialog: *mut FileDialog, filename: *const c_char) {
+pub unsafe extern "C" fn file_dialog_set_title(dialog: *mut FileDialog, filename: *const c_char) {
     unsafe {
         let filename = std::ffi::CStr::from_ptr(filename).to_str().unwrap();
         let dialog = &mut *dialog;

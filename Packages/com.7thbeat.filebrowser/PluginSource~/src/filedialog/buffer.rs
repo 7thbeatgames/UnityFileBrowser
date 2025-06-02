@@ -22,8 +22,11 @@ impl CStringBuffer {
     }
 }
 
+/// # Safety
+/// 
+/// the pointer must not be freed yet
 #[unsafe(no_mangle)]
-pub extern "C" fn cstring_buffer_free(buffer: *mut CStringBuffer) {
+pub unsafe extern "C" fn cstring_buffer_free(buffer: *mut CStringBuffer) {
     if !buffer.is_null() {
         unsafe {
             let buffer = Box::from_raw(buffer);

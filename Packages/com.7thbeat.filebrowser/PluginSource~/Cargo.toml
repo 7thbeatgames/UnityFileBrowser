@@ -8,7 +8,10 @@ name = "ufb"
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]
-opener = { git = "https://github.com/paring-chan/opener.git", rev = "36412b7cec2445065669ebe9af02df5480c10550", features = [
-    "reveal",
-] }
+opener = { version = "0.8.2", features = ["reveal"] }
+raw-window-handle = "0.6.2"
 rfd = "0.15.3"
+
+[dependencies.windows]
+version = "0.61.1"
+features = ["Win32_UI_WindowsAndMessaging"]
