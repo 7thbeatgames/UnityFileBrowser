@@ -7,7 +7,7 @@
 		"url": "https://7thbe.at"
 	},
 	"license": "MIT",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"files": [
 		"Plugins",
 		"Runtime"
