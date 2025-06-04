@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Interop;
 using JetBrains.Annotations;
 
@@ -5,6 +6,11 @@ namespace UnityFileDialog
 {
     public static class FileBrowser
     {
+        /// <summary>
+        /// Open file browser and select the file(does not open file)
+        /// </summary>
+        /// <param name="path">path to reveal</param>
+        /// <returns></returns>
         public static bool Reveal(string path) => NativeFunctions.opener_reveal(path);
 
         /// <summary>
