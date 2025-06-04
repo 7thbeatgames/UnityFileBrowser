@@ -14,7 +14,7 @@ A utility package to use file browser related things in unity runtime
 ## Installation
 
 1. use [openupm](https://openupm.com/)
-   - TODO
+   - Run command: `openupm add com.7thbeat.filebrowser`
 2. use git url to install(use latest commit)
    - `Window` -> `Package Manager` in unity editor
    - click `+` button, Add package from Git URL
@@ -42,12 +42,12 @@ var path = FileBrowser.PickFile(
     <summary>Basic save file picker</summary>
 
 ```cs
-var path = FileBrowser.SaveFile( 
+var path = FileBrowser.SaveFile(
     directory: Application.persistentDataPath,
-    filename: "hello.log", 
+    filename: "hello.log",
     filterName: "Log file",
     filterExtensions: new[] { "log" },
-    title: "save file!" 
+    title: "save file!"
 );
 ```
 
