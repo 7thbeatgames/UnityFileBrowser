@@ -1,15 +1,18 @@
 {
-	"name": "com.7thbeat.filebrowser",
-	"displayName": "Unity File Browser",
-	"description": "File browser related utilities for Unity runtime",
-	"author": {
-		"name": "7th Beat Games",
-		"url": "https://7thbe.at"
-	},
-	"license": "MIT",
-	"version": "1.0.0",
-	"files": [
-		"Plugins",
-		"Runtime"
-	]
+  "name": "com.7thbeat.filebrowser",
+  "displayName": "Unity File Browser",
+  "description": "File browser related utilities for Unity runtime",
+  "author": {
+    "name": "7th Beat Games",
+    "url": "https://7thbe.at"
+  },
+  "license": "MIT",
+  "version": "1.0.0",
+  "files": [
+    "Plugins",
+    "Runtime",
+    "Plugins.meta",
+    "Runtime.meta",
+    "package.json.meta"
+  ]
 }
