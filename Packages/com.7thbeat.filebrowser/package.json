@@ -7,12 +7,5 @@
     "url": "https://7thbe.at"
   },
   "license": "MIT",
-  "version": "1.0.1",
-  "files": [
-    "Plugins",
-    "Runtime",
-    "Plugins.meta",
-    "Runtime.meta",
-    "package.json.meta"
-  ]
+  "version": "1.0.1"
 }

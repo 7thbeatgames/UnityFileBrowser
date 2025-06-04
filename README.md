@@ -1,5 +1,7 @@
 # Unity File Browser
 
+[![openupm](https://img.shields.io/npm/v/com.7thbeat.filebrowser?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.7thbeat.filebrowser/)
+
 A utility package to use file browser related things in unity runtime
 
 ## Features
