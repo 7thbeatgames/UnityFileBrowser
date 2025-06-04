@@ -25,7 +25,12 @@ impl FileDialog {
 
     #[cfg(target_os = "macos")]
     pub fn new() -> Self {
-        Self::_new()
+        let mut dialog = Self::_new();
+
+        let window = unsafe { crate::utils::macos::get_game_window() };
+        dialog.dialog = dialog.dialog.set_parent(&window);
+
+        dialog
     }
 
     #[cfg(target_os = "windows")]
@@ -125,7 +130,10 @@ pub unsafe extern "C" fn file_dialog_set_directory(
 ///
 /// This function must have valid FileDialog pointer
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn file_dialog_set_file_name(dialog: *mut FileDialog, filename: *const c_char) {
+pub unsafe extern "C" fn file_dialog_set_file_name(
+    dialog: *mut FileDialog,
+    filename: *const c_char,
+) {
     unsafe {
         let filename = std::ffi::CStr::from_ptr(filename).to_str().unwrap();
         let dialog = &mut *dialog;
