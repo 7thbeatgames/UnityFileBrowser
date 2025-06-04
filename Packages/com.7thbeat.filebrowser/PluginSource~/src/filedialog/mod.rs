@@ -23,6 +23,11 @@ impl FileDialog {
         Self::_new()
     }
 
+    #[cfg(target_os = "macos")]
+    pub fn new() -> Self {
+        Self::_new()
+    }
+
     #[cfg(target_os = "windows")]
     pub fn new() -> Self {
         use crate::utils::windows;
