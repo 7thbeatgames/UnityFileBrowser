@@ -1,5 +1,6 @@
 use std::{env, path::PathBuf};
 
+#[cfg(target_os = "linux")]
 fn main() {
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
 
@@ -22,7 +23,7 @@ fn main() {
     // wrapper.hpp
     {
         let bindings = bindgen::Builder::default()
-            .header("wrapper.hpp")
+            .header("wrapper_linux.hpp")
             .clang_args(&cflags)
             .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
             .generate()
