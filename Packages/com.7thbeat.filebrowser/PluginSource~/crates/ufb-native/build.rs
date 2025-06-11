@@ -1,5 +1,8 @@
 use std::{env, path::PathBuf};
 
+#[cfg(not(target_os = "linux"))]
+fn main() {}
+
 #[cfg(target_os = "linux")]
 fn main() {
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
