@@ -9,7 +9,7 @@ use raw_window_handle::{
     XlibWindowHandle,
 };
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub enum LinuxWindowRef {
     Xlib {
         display: NonNull<c_void>,

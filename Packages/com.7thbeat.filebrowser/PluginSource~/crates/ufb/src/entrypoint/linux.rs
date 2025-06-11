@@ -7,8 +7,9 @@ use ufb_native::{
     IUnityGraphics, IUnityGraphicsVulkan, IUnityGraphicsVulkanV2, IUnityInterfaces,
     PFN_vkCreateWaylandSurfaceKHR, PFN_vkCreateXlibSurfaceKHR, PFN_vkGetInstanceProcAddr,
     PFN_vkVoidFunction, UnityGfxDeviceEventType,
-    UnityGfxDeviceEventType_kUnityGfxDeviceEventInitialize, VkAllocationCallbacks, VkInstance,
-    VkResult, VkSurfaceKHR, VkWaylandSurfaceCreateInfoKHR, VkXlibSurfaceCreateInfoKHR,
+    UnityGfxDeviceEventType_kUnityGfxDeviceEventInitialize,
+    UnityGfxRenderer_kUnityGfxRendererOpenGLCore, VkAllocationCallbacks, VkInstance, VkResult,
+    VkSurfaceKHR, VkWaylandSurfaceCreateInfoKHR, VkXlibSurfaceCreateInfoKHR, egl::EGL, gl::GL,
 };
 
 use crate::utils::linux::{LinuxWindowRef, set_window_handle};
@@ -55,6 +56,41 @@ pub extern "C" fn UnityPluginLoad(interfaces: *mut IUnityInterfaces) {
 unsafe extern "C" fn on_graphics_device_event(event_type: UnityGfxDeviceEventType) {
     if event_type == UnityGfxDeviceEventType_kUnityGfxDeviceEventInitialize {
         init_vulkan();
+
+        let g = get_graphics();
+
+        #[allow(non_upper_case_globals)]
+        match g.GetRenderer.unwrap()() {
+            UnityGfxRenderer_kUnityGfxRendererOpenGLCore => {
+                init_opengl();
+            }
+            _ => {}
+        }
+    }
+}
+
+unsafe fn init_opengl() {
+    unsafe {
+        match GL::new("libGL.so.1") {
+            Ok(gl) => {
+                let display = gl.glXGetCurrentDisplay();
+                if let Some(display) = NonNull::new(display as _) {
+                    set_window_handle(LinuxWindowRef::Xlib {
+                        window: gl.glXGetCurrentDrawable(),
+                        display,
+                    });
+
+                    return;
+                }
+            }
+            Err(e) => eprintln!("failed to load libGL: {e:?}"),
+        }
+        match EGL::new("libEGL.so.1") {
+            Ok(egl) => {
+                dbg!(egl.eglGetCurrentDisplay());
+            }
+            Err(e) => eprintln!("failed to load libEGL: {e:?}"),
+        }
     }
 }
 

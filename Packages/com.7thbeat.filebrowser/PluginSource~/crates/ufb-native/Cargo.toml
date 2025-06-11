@@ -7,3 +7,7 @@ build = "build.rs"
 
 [build-dependencies]
 bindgen = "0.72.0"
+pkg-config = "0.3.32"
+
+[dependencies]
+libloading = "0.8.8"
