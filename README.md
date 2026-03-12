@@ -2,7 +2,7 @@
 
 [![openupm](https://img.shields.io/npm/v/com.7thbeat.filebrowser?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.7thbeat.filebrowser/)
 
-A utility package to use file browser related things in unity runtime.
+A utility package to use file browser related things in Unity Runtime.
 
 ## Features
 
@@ -17,6 +17,7 @@ A utility package to use file browser related things in unity runtime.
 
 Option 1: Use [openupm](https://openupm.com/)
    - Run command: `openupm add com.7thbeat.filebrowser`
+
 Option 2: Use git url to install (uses latest commit)
    - `Window` -> `Package Manager` in unity editor
    - Click the `+` button, and `Add package from Git URL`
