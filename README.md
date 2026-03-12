@@ -2,7 +2,7 @@
 
 [![openupm](https://img.shields.io/npm/v/com.7thbeat.filebrowser?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.7thbeat.filebrowser/)
 
-A utility package to use file browser related things in unity runtime
+A utility package to use file browser related things in unity runtime.
 
 ## Features
 
@@ -15,26 +15,26 @@ A utility package to use file browser related things in unity runtime
 
 ## Installation
 
-1. use [openupm](https://openupm.com/)
+Option 1: Use [openupm](https://openupm.com/)
    - Run command: `openupm add com.7thbeat.filebrowser`
-2. use git url to install(use latest commit)
+Option 2: Use git url to install (uses latest commit)
    - `Window` -> `Package Manager` in unity editor
-   - click `+` button, Add package from Git URL
-   - Enter `git+https://github.com/7thbeatgames/UnityFileBrowser.git?path=Packages/com.7thbeat.filebrowser`
+   - Click the `+` button, and `Add package from Git URL`
+   - Paste `git+https://github.com/7thbeatgames/UnityFileBrowser.git?path=Packages/com.7thbeat.filebrowser`
 
 ## Examples
 
-see the description of each method for more details
+See the description of each method for more details.
 
 <details>
 <summary>Basic file picker</summary>
 
 ```cs
 var path = FileBrowser.PickFile(
-  directory: Application.persistentDataPath,
-  filterName: "Log file",
-  filterExtensions: new[] { "log" },
-  title: "Select a log file"
+    directory: Application.persistentDataPath,
+    filterName: "Log file",
+    filterExtensions: new[] { "log" },
+    title: "Select a log file"
 );
 ```
 
@@ -56,7 +56,7 @@ var path = FileBrowser.SaveFile(
 </details>
 
 <details>
-<summary>FileDialog example(Advanced)</summary>
+<summary><code>FileDialog</code> example (Advanced)</summary>
 
 ```cs
 using var dialog = new FileDialog();
@@ -64,6 +64,7 @@ dialog.SetTitle("Example dialog!");
 dialog.SetDirectory(Application.persistentDataPath);
 dialog.AddFilter("Text file", new[] { "txt" });
 dialog.AddFilter("JSON file", new[] { "json" }); // you can add multiple filters!
+
 var path = dialog.PickFile();
 ```
 
